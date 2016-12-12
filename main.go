@@ -9,16 +9,17 @@ func main() {
 
     sg := new(lib.Sgraper)
     //sg.SetUrl("https://google.com")
-    sg.Go(`{"url":"https://google.com", "search": [
+    result := sg.Go(`{"url":"http://www.tvapuntate.it/category/serie-tv-americane/", "tags": [
             {
-                "tag": "a",
-                "attributes": [{ "asd":"asd", "asd1":"asd1"}]
-            },
-            {
-                "tag": "div",
-                "attributes" : [{ "asd":"asd", "asd1":"asd1"}]
+                "type": "a",
+                "attributes": [
+                {
+                    "name": "title",
+                    "value": "Contatti"
+                }
+                ]
             }
         ]}`)
 
-    fmt.Println("HTML:\n\n",)
+    fmt.Println("HTML:\n\n",result)
 }
