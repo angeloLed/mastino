@@ -1,7 +1,7 @@
 **Mastino**
 =======
 
-A library writed in Golang for scraping web page. It's can be use with any language ( php, java, c# ... ) because **Mastino** use json as input/output comunication between the `manifest configuration`.
+A Golang library for scraping web page. It can be used with any language ( php, java, c# ... ) since **Mastino** uses json as input/output interchange format.
 
 Usage
 -----
@@ -12,7 +12,7 @@ cd mastino
 go get -u
 ```
 
-Mastino can be run like:
+You can also run Mastino like this:
 ```bash
 #compiled
 ./mastino "{\"url\":\"https://blog.golang.org/error-handling-and-go\", \"tags\": [{\"type\": \"div\",\"attributes\": [{\"key\": \"class\",\"value\": \"code\"}]}]}"
@@ -21,45 +21,45 @@ Mastino can be run like:
 go run main.go "{\"url\":\"https://blog.golang.org/error-handling-and-go\", \"tags\": [{\"type\": \"div\",\"attributes\": [{\"key\": \"class\",\"value\": \"code\"}]}]}"
 ```
 
-**The manifest configuration**
-Example of manifest configuration
+**Manifest configuration**
+Example of manifest configuration:
 ```json
 {
 	"url": "https://google.com",
 	"tags": [{
-				"type": "a",
-				"attributes": [{
-					"key": "class",
-					"value": "bg1"
-				}, {
-					"type": "span"
-				}, {
-					"type": "div",
-					"attributes": [{
-						"key": "css"
-				}]
-	}]
+			"type": "a",
+			"attributes": [{
+				"key": "class",
+				"value": "bg1"
+			}, {
+				"type": "span"
+			}]
+		},
+		{
+			"type": "div",
+			"attributes": [{
+			    "key": "css"
+	        }]
+    }]
 }
 ```
 
 | key | type | description |
 |---|---|---|
-| url |string| url target |
-|tags |array|each tag that Mastino must try to `bite`. This key contain all the roule of matching. Contains `attributes` `type`|
+| url |string| target url |
+|tags |array|each tag that Mastino must try to `bite`. The key contains all the matching rules. Contains `attributes` `type`|
 |type|string|DOM element |
 |attributes| array| each attributes of tag to verify. Contais `key` `value`|
 |key| string|the key of attribute |
 |value|string|the value of attribute|
 
-**Possibile Matching**
-
+**Possibile matching result**
  - `tag` is specified without `attribute`
  - `attribute` `key` is specified without `value`
- - `attribute` `key` is specified and `value` metch with value of DOM
+ - `attribute` `key` is specified and `value` match with value of DOM
 
 **Json Output**
-The json output is the same of input, but whenever mastino found a match, adds a new key `matches` inside `tags` element. The `matches` is array of string ( the DOM ).
-Example:
+Mastino returns a JSON with the same structure of the provided input JSON. Each  match found is returned us a `matches` entry inside `tags` element. `matches` is an array of strings ( the DOM ).
 ```json
 {
 	"url": "https://blog.golang.org/error-handling-and-go",
@@ -76,15 +76,15 @@ Example:
 }
 ```
 
-**the other language...**
-example php:
+**Using Mastino with Other languages**
+PHP:
 ```php
 $jsonManifest = "{\"url\":\"https://blog.golang.org/error-handling-and-go\", \"tags\": [{\"type\": \"div\",\"attributes\": [{\"key\": \"class\",\"value\": \"code\"}]}]}";
 $output = shell_exec("/path/to/mastino {$jsonManifest}");
 var_dump(json_decode($output, true));
 ```
 
-example c# :
+C# :
 ```cs
 using System;
 using System.Diagnostics;
@@ -107,7 +107,7 @@ class Runshell
 }
 ```
 
-example nodejs:
+Nodejs:
 ```js
 var sys = require('sys')
 var exec = require('child_process').exec;
@@ -115,6 +115,30 @@ function puts(error, stdout, stderr) { sys.puts(stdout) }
 var manifest = "{\"url\":\"https://blog.golang.org/error-handling-and-go\", \"tags\": [{\"type\": \"div\",\"attributes\": [{\"key\": \"class\",\"value\": \"code\"}]}]}";
 exec("/path/to/mastino " + manifest, puts);
 ```
+
+Golang:
+```go
+package main
+
+import "os/exec"
+
+func main() {
+    app := "/path/to/mastino"
+
+    manifest := "{\"url\":\"https://blog.golang.org/error-handling-and-go\", \"tags\": [{\"type\": \"div\",\"attributes\": [{\"key\": \"class\",\"value\": \"code\"}]}]}"
+
+    cmd := exec.Command(app, manifest, nil, nil, nil)
+    stdout, err := cmd.Output()
+
+    if err != nil {
+        println(err.Error())
+        return
+    }
+
+    print(string(stdout))
+}
+```
+
 
 License
 -------
