@@ -1,25 +1,35 @@
 package main
 
 import (
-    "SGraper/lib"
+    "mastino/lib"
     "fmt"
+    "os"
 )
 
 func main() {
 
-    sg := new(lib.Sgraper)
-    //sg.SetUrl("https://google.com")
-    result := sg.Go(`{"url":"http://www.tvapuntate.it/category/serie-tv-americane/", "tags": [
-            {
-                "type": "a",
-                "attributes": [
-                {
-                    "name": "title",
-                    "value": "Contatti"
-                }
-                ]
-            }
-        ]}`)
+    // configString := `{"url":"https://blog.golang.org/error-handling-and-go", "tags": [
+    //         {
+    //             "type": "div",
+    //             "attributes": [
+    //             {
+    //                 "key": "class",
+    //                 "value": "code"
+    //             }
+    //             ]
+    //         }
+    //     ]}`
 
-    fmt.Println("HTML:\n\n",result)
+    configString := ""
+    if(len(os.Args) > 1) {
+        configString = os.Args[1]
+    }
+
+
+    sg := new(lib.Mastino)
+    sg.Go(configString)
+
+    result := sg.GetResults()
+
+    fmt.Println(result)
 }
